@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 
 public class GUI extends JFrame implements DialogClient{
-		
+
 	public int GUI_DISPLAY_LIMIT = 100;
 
 	// Store the model as a vector of email buddies
@@ -32,7 +32,7 @@ public class GUI extends JFrame implements DialogClient{
 
 	private FakeBookSong    selectedSong; //song currently selected in the GUI list
 	private FakeBook		selectedBook; //book currently selected in the GUI list
-	
+
 	private FakeBookSong songBeingEdited; //song being edited in a dialog
 
 	// Store the view that contains the components
@@ -52,17 +52,17 @@ public class GUI extends JFrame implements DialogClient{
 		databaseConnection = aDB;
 		stat = aStatement;
 
-        bookList = initialBooks;
-        songList = initialSongs;
+		bookList = initialBooks;
+		songList = initialSongs;
 		selectedBook = null;
 		selectedSong = null;
 		thisFrame = this;
-		
+
 		addWindowListener(
 				new WindowAdapter() {
-	 				public void windowClosing(WindowEvent e) {
-	 					try {
-	 						System.out.println("Closing Database Connection");
+					public void windowClosing(WindowEvent e) {
+						try {
+							System.out.println("Closing Database Connection");
 							databaseConnection.close();
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
@@ -71,7 +71,7 @@ public class GUI extends JFrame implements DialogClient{
 						System.exit(0);
 					}
 				}
-			);
+				);
 
 
 
@@ -86,61 +86,61 @@ public class GUI extends JFrame implements DialogClient{
 
 
 
-		// Add a listener to allow selection of buddies from the list
-		songListSelectionListener = new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent event) {
-				selectSong();
-			}};
-		// Add a listener to allow selection of buddies from the list
-		bookListSelectionListener = new ListSelectionListener() {
+			// Add a listener to allow selection of buddies from the list
+			songListSelectionListener = new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent event) {
-					selectBook();
+					selectSong();
 				}};
+				// Add a listener to allow selection of buddies from the list
+				bookListSelectionListener = new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent event) {
+						selectBook();
+					}};
 
-		// Add a listener to allow double click selections from the list for editing
-				doubleClickSongListListener = new MouseAdapter() {
-			public void mouseClicked(MouseEvent event) {
-				if (event.getClickCount() == 2) {
-					JList theList = (JList) event.getSource();
-					int index = theList.locationToIndex(event.getPoint());
-					songBeingEdited = (FakeBookSong) theList.getModel().getElementAt(index);
-					System.out.println("Double Click on: " + songBeingEdited);
-					
-					
-					SongDetailsDialog dialog = new SongDetailsDialog(thisFrame, thisFrame, "Song Details Dialog", true, songBeingEdited);         
-					dialog.setVisible(true);
-
-				} 
-					
-			}};
-			
-		keyListener = new KeyListener() {
-
-				@Override
-				public void keyPressed(KeyEvent arg0) {
-						
-				}
-
-				@Override
-				public void keyReleased(KeyEvent arg0) {
-					
-				}
-
-				@Override
-				public void keyTyped(KeyEvent arg0) {
-
-					int keyChar = arg0.getKeyChar();
-
-			        if (keyChar == KeyEvent.VK_ENTER)  search();
-				
-				}};
+					// Add a listener to allow double click selections from the list for editing
+					doubleClickSongListListener = new MouseAdapter() {
+						public void mouseClicked(MouseEvent event) {
+							if (event.getClickCount() == 2) {
+								JList theList = (JList) event.getSource();
+								int index = theList.locationToIndex(event.getPoint());
+								songBeingEdited = (FakeBookSong) theList.getModel().getElementAt(index);
+								System.out.println("Double Click on: " + songBeingEdited);
 
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(600,300);
+								SongDetailsDialog dialog = new SongDetailsDialog(thisFrame, thisFrame, "Song Details Dialog", true, songBeingEdited);         
+								dialog.setVisible(true);
 
-		// Start off with everything updated properly to reflect the model state
-		update();
+							} 
+
+						}};
+
+						keyListener = new KeyListener() {
+
+							@Override
+							public void keyPressed(KeyEvent arg0) {
+
+							}
+
+							@Override
+							public void keyReleased(KeyEvent arg0) {
+
+							}
+
+							@Override
+							public void keyTyped(KeyEvent arg0) {
+
+								int keyChar = arg0.getKeyChar();
+
+								if (keyChar == KeyEvent.VK_ENTER)  search();
+
+							}};
+
+
+							setDefaultCloseOperation(EXIT_ON_CLOSE);
+							setSize(600,300);
+
+							// Start off with everything updated properly to reflect the model state
+							update();
 	}
 
 	// Enable all listeners
@@ -164,42 +164,42 @@ public class GUI extends JFrame implements DialogClient{
 
 	// This is called when the user clicks the add button
 	private void search() {
-		
+
 		String searchPrototype = view.getSearchText().getText().trim();
-		
-		
-        String sqlQueryString = "select * from songs3005W2014 where title like '%" + searchPrototype + "%' order by title asc" + ";";
-        //check some special cases
-        if(searchPrototype.equals("*"))      sqlQueryString = "select * from songs3005W2014" + ";";
-        else if(searchPrototype.equals("%")) sqlQueryString = "select * from songs3005W2014" + ";";
-        else if(searchPrototype.equals(""))  sqlQueryString = "select * from songs3005W2014" + ";";
 
-	    try {
+
+		String sqlQueryString = "select * from songs3005W2014 where title like '%" + searchPrototype + "%' order by title asc" + ";";
+		//check some special cases
+		if(searchPrototype.equals("*"))      sqlQueryString = "select * from songs3005W2014" + ";";
+		else if(searchPrototype.equals("%")) sqlQueryString = "select * from songs3005W2014" + ";";
+		else if(searchPrototype.equals(""))  sqlQueryString = "select * from songs3005W2014" + ";";
+
+		try {
 			ResultSet rs = stat.executeQuery(sqlQueryString);
-			
-            ArrayList<FakeBookSong> songSearchResults = new ArrayList<FakeBookSong>();
 
-	        int count = 0;
-	        while (rs.next() && count < GUI_DISPLAY_LIMIT){
-	        	FakeBookSong song = new FakeBookSong(
-	        			rs.getInt("id"),
-	        			rs.getString("bookcode"),
-	        			rs.getInt("page"),
-	        			rs.getString("title")
-	        			);
-	        	
-	            songSearchResults.add(song);
-            count++;
-	        }
-	        rs.close(); //close the query result table
-	        FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
-	        songList = songSearchResults;
+			ArrayList<FakeBookSong> songSearchResults = new ArrayList<FakeBookSong>();
+
+			int count = 0;
+			while (rs.next() && count < GUI_DISPLAY_LIMIT){
+				FakeBookSong song = new FakeBookSong(
+						rs.getInt("id"),
+						rs.getString("bookcode"),
+						rs.getInt("page"),
+						rs.getString("title")
+						);
+
+				songSearchResults.add(song);
+				count++;
+			}
+			rs.close(); //close the query result table
+			FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
+			songList = songSearchResults;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Search clicked");
 		update();
 	}
@@ -212,14 +212,14 @@ public class GUI extends JFrame implements DialogClient{
 	private void selectBook() {
 		selectedBook = (FakeBook)(view.getBookList().getSelectedValue());
 		System.out.println("Book Selected: " + selectedBook);
-	
+
 		update();
 	}
 	// This is called when the user selects a song from the list
 	private void selectSong() {
 		selectedSong = (FakeBookSong)(view.getSongList().getSelectedValue());
 		System.out.println("Song Selected: " + selectedSong);
-	
+
 		update();
 	}
 
@@ -235,11 +235,11 @@ public class GUI extends JFrame implements DialogClient{
 	private void updateList() {
 		boolean		foundSelected = false;
 
-        FakeBook bookArray[] = new FakeBook[1]; //just to establish array type
-	    view.getBookList().setListData(((FakeBook []) bookList.toArray(bookArray)));
+		FakeBook bookArray[] = new FakeBook[1]; //just to establish array type
+		view.getBookList().setListData(((FakeBook []) bookList.toArray(bookArray)));
 
-	    FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
-	    view.getSongList().setListData(((FakeBookSong []) songList.toArray(songArray)));
+		FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
+		view.getSongList().setListData(((FakeBookSong []) songList.toArray(songArray)));
 
 		if (selectedBook != null)
 			view.getBookList().setSelectedValue(selectedBook, true);
@@ -262,31 +262,69 @@ public class GUI extends JFrame implements DialogClient{
 			//TO DO
 			//update song data in database
 			System.out.println("UPDATE: " + songBeingEdited );
-			
+
 			String sqlUpdateString = "update songs3005W2014 " 
-			+"set "
-			//+ "id="  + songBeingEdited.getID() +", "
-			+ "bookcode='" + songBeingEdited.getBookCode() + "', "
-			+ "page='" + songBeingEdited.getPage() + "', " 
-			+ "title='" + songBeingEdited.getTitle() + "' "
-			+ "where id=" + songBeingEdited.getID()  + ";";
+					+"set "
+					//+ "id="  + songBeingEdited.getID() +", "
+					+ "bookcode='" + songBeingEdited.getBookCode() + "', "
+					+ "page='" + songBeingEdited.getPage() + "', " 
+					+ "title='" + songBeingEdited.getTitle() + "' "
+					+ "where id=" + songBeingEdited.getID()  + ";";
+
 			System.out.println("sqlUpdateString: " + sqlUpdateString);
-			
+
 			try {
 				stat.executeUpdate(sqlUpdateString);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		else if(requestedOperation == DialogClient.operation.DELETE){
-			//TO DO
+			//TODO
 			//delete song from database
+			int numParams = 0;
 			System.out.println("DELETE: " + songBeingEdited );
-			
+
+			String sqlDeleteString = "delete from songs3005W2014 where ";
+			if(songBeingEdited.getID().length() > 0){
+				sqlDeleteString	+= " id="  + songBeingEdited.getID() + " ";
+			}
+
+			else{
+
+				if(songBeingEdited.getBookCode().length() > 0){
+					sqlDeleteString += "bookcode='" + songBeingEdited.getBookCode() + "'";
+					numParams++;
+				}
+
+				if(songBeingEdited.getPage().length() > 0){
+					sqlDeleteString += (numParams > 0 ? " AND " : "");
+					sqlDeleteString += " page=" + songBeingEdited.getPage();
+					numParams++;
+				}
+
+				if(songBeingEdited.getTitle().length() > 0){
+					sqlDeleteString += (numParams > 0 ? " AND " : "");
+					sqlDeleteString += " title='" + songBeingEdited.getTitle() + "'";
+				}
+			}
+
+			sqlDeleteString += ";";
+
+			System.out.println("sqlDeleteString: " + sqlDeleteString);
+
+			try {
+				stat.executeUpdate(sqlDeleteString);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+
 		}
 		songBeingEdited = null;
+		
 		update();
+		search();
 	}
 
 	@Override
@@ -294,7 +332,7 @@ public class GUI extends JFrame implements DialogClient{
 
 		songBeingEdited = null;
 		update();
-		
+
 	}
 
 }

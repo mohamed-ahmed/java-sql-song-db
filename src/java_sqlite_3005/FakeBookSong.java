@@ -5,31 +5,35 @@ public class FakeBookSong {
 	 * This class represents a song that appears in a fake book database
 	 */
 	
-	private int id; //database table primary key id
+	private String id; //database table primary key id
 	private String bookcode; //string code for fake book
-	private int page; //page number of song in bookcode fakebook
+	private String page; //page number of song in bookcode fakebook
 	private String title; //title of song
 	
 	public FakeBookSong(int databaseKey, String aBookCode, int aPageNumber, String aSongTitle){
-		id = databaseKey;
+		id = "" + databaseKey;
 		bookcode = aBookCode;
-		page = aPageNumber;
+		page ="" + aPageNumber;
 		title = aSongTitle;
 	}
 	
-	public int getID() {
+	public String getID() {
 		return id;
 	}
 	public String getBookCode() {
 		return bookcode;
 	}
-	public int getPage() {
+	public String getPage() {
 		return page;
 	}
 	
 	public String getTitle() {
 		return title;
 		}
+	
+	public void setID(String anID) {
+		id = anID;
+	}
 	
 	public void setTitle(String aSongTitle) {
 		title = aSongTitle;
@@ -39,7 +43,7 @@ public class FakeBookSong {
 		bookcode = aBookCode;
 	}
 	
-	public void setPage(int aPage) {
+	public void setPage(String aPage) {
 		page = aPage;
 	}
 	
@@ -55,5 +59,7 @@ public class FakeBookSong {
 		
 		return "" + id + keyIndent + bookcode + "   " + page + pageIndent + title;
 	}
+
+
 
 }
