@@ -170,9 +170,9 @@ public class GUI extends JFrame implements DialogClient{
 		
         String sqlQueryString = "select * from songs3005W2014 where title like '%" + searchPrototype + "%' order by title asc" + ";";
         //check some special cases
-        if(searchPrototype.equals("*")) sqlQueryString = "select * from songs3005W2014" + ";";
+        if(searchPrototype.equals("*"))      sqlQueryString = "select * from songs3005W2014" + ";";
         else if(searchPrototype.equals("%")) sqlQueryString = "select * from songs3005W2014" + ";";
-        else if(searchPrototype.equals("")) sqlQueryString = "select * from songs3005W2014" + ";";
+        else if(searchPrototype.equals(""))  sqlQueryString = "select * from songs3005W2014" + ";";
 
 	    try {
 			ResultSet rs = stat.executeQuery(sqlQueryString);
@@ -208,7 +208,7 @@ public class GUI extends JFrame implements DialogClient{
 	// This is called when the user clicks the edit button
 
 
-	// This is called when the user selects a bok from the list
+	// This is called when the user selects a book from the list
 	private void selectBook() {
 		selectedBook = (FakeBook)(view.getBookList().getSelectedValue());
 		System.out.println("Book Selected: " + selectedBook);
@@ -224,7 +224,7 @@ public class GUI extends JFrame implements DialogClient{
 	}
 
 
-	// Update the remove button
+	// Update the search button
 	private void updateSearchButton() {
 		view.getSearchButton().setEnabled(true);
 	}
@@ -262,6 +262,22 @@ public class GUI extends JFrame implements DialogClient{
 			//TO DO
 			//update song data in database
 			System.out.println("UPDATE: " + songBeingEdited );
+			
+			String sqlUpdateString = "update songs3005W2014 " 
+			+"set "
+			//+ "id="  + songBeingEdited.getID() +", "
+			+ "bookcode='" + songBeingEdited.getBookCode() + "', "
+			+ "page='" + songBeingEdited.getPage() + "', " 
+			+ "title='" + songBeingEdited.getTitle() + "' "
+			+ "where id=" + songBeingEdited.getID()  + ";";
+			System.out.println("sqlUpdateString: " + sqlUpdateString);
+			
+			try {
+				stat.executeUpdate(sqlUpdateString);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if(requestedOperation == DialogClient.operation.DELETE){
 			//TO DO

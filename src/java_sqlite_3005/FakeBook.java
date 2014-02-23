@@ -13,8 +13,13 @@ public class FakeBook {
 		title = aBookTitle;
 	}
 	
-	public String getBookCode() {return bookcode;}
-	public String getTitle() {return title;}
+	public String getBookCode() {
+		return bookcode;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
 	
 	public String toString(){
 		return "" + bookcode + " " +  title;

@@ -17,14 +17,31 @@ public class FakeBookSong {
 		title = aSongTitle;
 	}
 	
-	public int getID() {return id;}
-	public String getBookCode() {return bookcode;}
-	public int getPage() {return page;}
-	public String getTitle() {return title;}
+	public int getID() {
+		return id;
+	}
+	public String getBookCode() {
+		return bookcode;
+	}
+	public int getPage() {
+		return page;
+	}
 	
-	public void setTitle(String aSongTitle) {title = aSongTitle;}
-	public void setBookCode(String aBookCode) {bookcode = aBookCode;}
-	public void setPage(int aPage) {page = aPage;}
+	public String getTitle() {
+		return title;
+		}
+	
+	public void setTitle(String aSongTitle) {
+		title = aSongTitle;
+	
+	}
+	public void setBookCode(String aBookCode) {
+		bookcode = aBookCode;
+	}
+	
+	public void setPage(int aPage) {
+		page = aPage;
+	}
 	
 	public String toString(){
 		
