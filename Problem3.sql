@@ -1,6 +1,6 @@
 /*COMP 3005 Assignment4 - Mohamed Ahmed - 100828374*/
 
-drop table if exists places;
+drop table if exists place;
 drop table if exists is_place_of_service;
 drop table if exists place_of_service;
 drop table if exists services;
@@ -9,16 +9,16 @@ drop table if exists service;
 drop table if exists contains_place;
 drop table if exists is_contained_in;
 
-create table places(
+create table place(
 	place_id integer NOT NULL primary key,
 	name varchar(30),
 	type varchar(30),
 	location varchar(30),
 	address varchar(30),
 	website varchar(30),
-	opening_hours varchar(30),
-	closing_hours varchar(30),
-	ratings varchar(30)
+	opening_hours int(30),
+	closing_hours int(30),
+	rating int(30)
 );
 
 create table service(
@@ -46,7 +46,22 @@ create table place_contains_place(
 
 BEGIN TRANSACTION;
 
+--insert into places values()
 
---insert into places values(, , , , , , , , );
+
+--Places
+insert into place values(1, "tims","cafe" ,"45.1,-75.2" ,"1720 innes road" ,"www.tims.com" ,800, 2200 ,4 );
+insert into place values(2, "tims", "cafe", "45.2-74.3", "123 Blair Road", "www.tims.com", 900, 2300, 3);
+insert into place values(3, "Orleans Mall", "mall", "45.4,-74.5", "100 Orleans Blvd", "www.OrleansMall.com", 900, 2100, );
+
+
+--Services
+insert into service values(101, "tims", "cafe", "www.tims.com");
+
+--What place is of what service
+insert into place_of_service values (101,1);
+
+--what place is contained in what other place
+insert into place_contains_place values(3, 1);
 
 COMMIT TRANSACTION;
