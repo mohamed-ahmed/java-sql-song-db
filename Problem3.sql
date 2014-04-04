@@ -1,13 +1,13 @@
 /*COMP 3005 Assignment4 - Mohamed Ahmed - 100828374*/
 
-drop table if exists place;
+drop table if exists places;
 drop table if exists is_place_of_service;
 drop table if exists place_of_service;
 drop table if exists services;
 drop table if exists place_contains_place;
 drop table if exists service;
 drop table if exists contains_place;
-drop table if is_contained_in;
+drop table if exists is_contained_in;
 
 create table places(
 	place_id integer NOT NULL primary key,
@@ -44,4 +44,9 @@ create table place_contains_place(
 	foreign key (place_id_outter) references places (place_id) on delete cascade
 );
 
-insert into places values(, , , , , , , , );
+BEGIN TRANSACTION;
+
+
+--insert into places values(, , , , , , , , );
+
+COMMIT TRANSACTION;
