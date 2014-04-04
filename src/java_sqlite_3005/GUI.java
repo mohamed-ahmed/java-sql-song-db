@@ -26,14 +26,14 @@ public class GUI extends JFrame implements DialogClient{
 	Connection databaseConnection;
 	Statement stat;
 
-	ArrayList<FakeBook> bookList = new ArrayList<FakeBook>();
-	ArrayList<FakeBookSong> songList = new ArrayList<FakeBookSong>();
+	ArrayList<Service> serviceList = new ArrayList<Service>();
+	ArrayList<Place> placeList = new ArrayList<Place>();
 
 
-	private FakeBookSong    selectedSong; //song currently selected in the GUI list
-	private FakeBook		selectedBook; //book currently selected in the GUI list
+	private Place    selectedPlace; //place currently selected in the GUI list
+	private Service		selectedService; //service currently selected in the GUI list
 
-	private FakeBookSong songBeingEdited; //song being edited in a dialog
+	private Place placeBeingEdited; //place being edited in a dialog
 
 	// Store the view that contains the components
 	ListPanel 		view; //panel of GUI components for the main window
@@ -41,21 +41,22 @@ public class GUI extends JFrame implements DialogClient{
 
 	// Here are the component listeners
 	ActionListener			theSearchButtonListener;
-	ListSelectionListener	songListSelectionListener;
-	ListSelectionListener	bookListSelectionListener;
-	MouseListener			doubleClickSongListListener;
+	ListSelectionListener	placeListSelectionListener;
+	ListSelectionListener	serviceListSelectionListener;
+	MouseListener			doubleClickPlaceListListener;
 	KeyListener             keyListener;
 
 	// Here is the default constructor
-	public GUI(String title, Connection aDB, Statement aStatement, ArrayList<FakeBook> initialBooks, ArrayList<FakeBookSong> initialSongs) {
+	public GUI(String title, Connection aDB, Statement aStatement, ArrayList<Service> initialServices, ArrayList<Place> initialPlaces) {
 		super(title);
+		
 		databaseConnection = aDB;
 		stat = aStatement;
 
-		bookList = initialBooks;
-		songList = initialSongs;
-		selectedBook = null;
-		selectedSong = null;
+		serviceList = initialServices;
+		placeList = initialPlaces;
+		selectedService = null;
+		selectedPlace = null;
 		thisFrame = this;
 
 		addWindowListener(
@@ -87,27 +88,27 @@ public class GUI extends JFrame implements DialogClient{
 
 
 			// Add a listener to allow selection of buddies from the list
-			songListSelectionListener = new ListSelectionListener() {
+			placeListSelectionListener = new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent event) {
-					selectSong();
+					selectPlace();
 				}};
 				// Add a listener to allow selection of buddies from the list
-				bookListSelectionListener = new ListSelectionListener() {
+				serviceListSelectionListener = new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent event) {
-						selectBook();
+						selectService();
 					}};
 
 					// Add a listener to allow double click selections from the list for editing
-					doubleClickSongListListener = new MouseAdapter() {
+					doubleClickPlaceListListener = new MouseAdapter() {
 						public void mouseClicked(MouseEvent event) {
 							if (event.getClickCount() == 2) {
 								JList theList = (JList) event.getSource();
 								int index = theList.locationToIndex(event.getPoint());
-								songBeingEdited = (FakeBookSong) theList.getModel().getElementAt(index);
-								System.out.println("Double Click on: " + songBeingEdited);
+								placeBeingEdited = (Place) theList.getModel().getElementAt(index);
+								System.out.println("Double Click on: " + placeBeingEdited);
 
 
-								SongDetailsDialog dialog = new SongDetailsDialog(thisFrame, thisFrame, "Song Details Dialog", true, songBeingEdited);         
+								PlaceDetailsDialog dialog = new PlaceDetailsDialog(thisFrame, thisFrame, "Place Details Dialog", true, placeBeingEdited);         
 								dialog.setVisible(true);
 
 							} 
@@ -146,18 +147,18 @@ public class GUI extends JFrame implements DialogClient{
 	// Enable all listeners
 	private void enableListeners() {
 		view.getSearchButton().addActionListener(theSearchButtonListener);
-		view.getBookList().addListSelectionListener(bookListSelectionListener);
-		view.getSongList().addListSelectionListener(songListSelectionListener);
-		view.getSongList().addMouseListener(doubleClickSongListListener);
+		view.getServiceList().addListSelectionListener(serviceListSelectionListener);
+		view.getPlaceList().addListSelectionListener(placeListSelectionListener);
+		view.getPlaceList().addMouseListener(doubleClickPlaceListListener);
 		view.getSearchText().addKeyListener(keyListener);
 	}
 
 	// Disable all listeners
 	private void disableListeners() {
 		view.getSearchButton().removeActionListener(theSearchButtonListener);
-		view.getBookList().removeListSelectionListener(bookListSelectionListener);
-		view.getSongList().removeListSelectionListener(songListSelectionListener);
-		view.getSongList().removeMouseListener(doubleClickSongListListener);
+		view.getServiceList().removeListSelectionListener(serviceListSelectionListener);
+		view.getPlaceList().removeListSelectionListener(placeListSelectionListener);
+		view.getPlaceList().removeMouseListener(doubleClickPlaceListListener);
 		view.getSearchText().removeKeyListener(keyListener);
 	}
 
@@ -168,32 +169,37 @@ public class GUI extends JFrame implements DialogClient{
 		String searchPrototype = view.getSearchText().getText().trim();
 
 
-		String sqlQueryString = "select * from songs3005W2014 where title like '%" + searchPrototype + "%' order by title asc" + ";";
+		String sqlQueryString = "select * from places where name like '%" + searchPrototype + "%' order by name asc" + ";";
 		//check some special cases
-		if(searchPrototype.equals("*"))      sqlQueryString = "select * from songs3005W2014" + ";";
-		else if(searchPrototype.equals("%")) sqlQueryString = "select * from songs3005W2014" + ";";
-		else if(searchPrototype.equals(""))  sqlQueryString = "select * from songs3005W2014" + ";";
+		if(searchPrototype.equals("*"))      sqlQueryString = "select * from places" + ";";
+		else if(searchPrototype.equals("%")) sqlQueryString = "select * from places" + ";";
+		else if(searchPrototype.equals(""))  sqlQueryString = "select * from places" + ";";
 
 		try {
 			ResultSet rs = stat.executeQuery(sqlQueryString);
 
-			ArrayList<FakeBookSong> songSearchResults = new ArrayList<FakeBookSong>();
+			ArrayList<Place> placeSearchResults = new ArrayList<Place>();
 
 			int count = 0;
 			while (rs.next() && count < GUI_DISPLAY_LIMIT){
-				FakeBookSong song = new FakeBookSong(
-						rs.getInt("id"),
-						rs.getString("bookcode"),
-						rs.getInt("page"),
-						rs.getString("title")
-						);
+				Place place = new Place(
+						rs.getInt("place_id"),
+						rs.getString("name"),
+						rs.getString("type"),
+						rs.getString("location"),
+						rs.getString("address"),
+						rs.getString("website"),
+						rs.getInt("opening_hours"),
+						rs.getInt("closing_hours"),
+						rs.getInt("rating")
+				);
 
-				songSearchResults.add(song);
+				placeSearchResults.add(place);
 				count++;
 			}
 			rs.close(); //close the query result table
-			FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
-			songList = songSearchResults;
+			Place placeArray[] = new Place[1]; //just to establish array type
+			placeList = placeSearchResults;
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -208,17 +214,17 @@ public class GUI extends JFrame implements DialogClient{
 	// This is called when the user clicks the edit button
 
 
-	// This is called when the user selects a book from the list
-	private void selectBook() {
-		selectedBook = (FakeBook)(view.getBookList().getSelectedValue());
-		System.out.println("Book Selected: " + selectedBook);
+	// This is called when the user selects a service from the list
+	private void selectService() {
+		selectedService = (Service)(view.getServiceList().getSelectedValue());
+		System.out.println("Service Selected: " + selectedService);
 
 		update();
 	}
-	// This is called when the user selects a song from the list
-	private void selectSong() {
-		selectedSong = (FakeBookSong)(view.getSongList().getSelectedValue());
-		System.out.println("Song Selected: " + selectedSong);
+	// This is called when the user selects a place from the list
+	private void selectPlace() {
+		selectedPlace = (Place)(view.getPlaceList().getSelectedValue());
+		System.out.println("Place Selected: " + selectedPlace);
 
 		update();
 	}
@@ -235,16 +241,16 @@ public class GUI extends JFrame implements DialogClient{
 	private void updateList() {
 		boolean		foundSelected = false;
 
-		FakeBook bookArray[] = new FakeBook[1]; //just to establish array type
-		view.getBookList().setListData(((FakeBook []) bookList.toArray(bookArray)));
+		Service serviceArray[] = new Service[1]; //just to establish array type
+		view.getServiceList().setListData(((Service []) serviceList.toArray(serviceArray)));
 
-		FakeBookSong songArray[] = new FakeBookSong[1]; //just to establish array type
-		view.getSongList().setListData(((FakeBookSong []) songList.toArray(songArray)));
+		Place placeArray[] = new Place[1]; //just to establish array type
+		view.getPlaceList().setListData(((Place []) placeList.toArray(placeArray)));
 
-		if (selectedBook != null)
-			view.getBookList().setSelectedValue(selectedBook, true);
-		if (selectedSong != null)
-			view.getSongList().setSelectedValue(selectedSong, true);
+		if (selectedService != null)
+			view.getServiceList().setSelectedValue(selectedService, true);
+		if (selectedPlace != null)
+			view.getPlaceList().setSelectedValue(selectedPlace, true);
 	}
 
 	// Update the components
@@ -260,16 +266,16 @@ public class GUI extends JFrame implements DialogClient{
 		// TODO 
 		if(requestedOperation == DialogClient.operation.UPDATE){
 			//TO DO
-			//update song data in database
-			System.out.println("UPDATE: " + songBeingEdited );
+			//update place data in database
+			System.out.println("UPDATE: " + placeBeingEdited );
 
-			String sqlUpdateString = "update songs3005W2014 " 
+			String sqlUpdateString = "update place " 
 					+"set "
-					//+ "id="  + songBeingEdited.getID() +", "
-					+ "bookcode='" + songBeingEdited.getBookCode() + "', "
-					+ "page='" + songBeingEdited.getPage() + "', " 
-					+ "title='" + songBeingEdited.getTitle() + "' "
-					+ "where id=" + songBeingEdited.getID()  + ";";
+					//+ "id="  + placeBeingEdited.getID() +", "
+					+ "servicecode='" + placeBeingEdited.getServiceCode() + "', "
+					+ "page='" + placeBeingEdited.getPage() + "', " 
+					+ "title='" + placeBeingEdited.getTitle() + "' "
+					+ "where id=" + placeBeingEdited.getID()  + ";";
 
 			System.out.println("sqlUpdateString: " + sqlUpdateString);
 
@@ -281,31 +287,31 @@ public class GUI extends JFrame implements DialogClient{
 		}
 		else if(requestedOperation == DialogClient.operation.DELETE){
 			//TODO
-			//delete song from database
+			//delete place from database
 			int numParams = 0;
-			System.out.println("DELETE: " + songBeingEdited );
+			System.out.println("DELETE: " + placeBeingEdited );
 
-			String sqlDeleteString = "delete from songs3005W2014 where ";
-			if(songBeingEdited.getID().length() > 0){
-				sqlDeleteString	+= " id="  + songBeingEdited.getID() + " ";
+			String sqlDeleteString = "delete from place where ";
+			if(placeBeingEdited.getID().length() > 0){
+				sqlDeleteString	+= " id="  + placeBeingEdited.getID() + " ";
 			}
 
 			else{
 
-				if(songBeingEdited.getBookCode().length() > 0){
-					sqlDeleteString += "bookcode='" + songBeingEdited.getBookCode() + "'";
+				if(placeBeingEdited.getServiceCode().length() > 0){
+					sqlDeleteString += "servicecode='" + placeBeingEdited.getServiceCode() + "'";
 					numParams++;
 				}
 
-				if(songBeingEdited.getPage().length() > 0){
+				if(placeBeingEdited.getPage().length() > 0){
 					sqlDeleteString += (numParams > 0 ? " AND " : "");
-					sqlDeleteString += " page=" + songBeingEdited.getPage();
+					sqlDeleteString += " page=" + placeBeingEdited.getPage();
 					numParams++;
 				}
 
-				if(songBeingEdited.getTitle().length() > 0){
+				if(placeBeingEdited.getTitle().length() > 0){
 					sqlDeleteString += (numParams > 0 ? " AND " : "");
-					sqlDeleteString += " title='" + songBeingEdited.getTitle() + "'";
+					sqlDeleteString += " title='" + placeBeingEdited.getTitle() + "'";
 				}
 			}
 
@@ -321,7 +327,7 @@ public class GUI extends JFrame implements DialogClient{
 
 
 		}
-		songBeingEdited = null;
+		placeBeingEdited = null;
 		
 		update();
 		search();
@@ -330,7 +336,7 @@ public class GUI extends JFrame implements DialogClient{
 	@Override
 	public void dialogCancelled() {
 
-		songBeingEdited = null;
+		placeBeingEdited = null;
 		update();
 
 	}

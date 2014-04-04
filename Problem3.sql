@@ -16,9 +16,9 @@ create table place(
 	location varchar(30),
 	address varchar(30),
 	website varchar(30),
-	opening_hours int(30),
-	closing_hours int(30),
-	rating int(30)
+	opening_hours integer(30),
+	closing_hours integer(30),
+	rating integer(30)
 );
 
 create table service(

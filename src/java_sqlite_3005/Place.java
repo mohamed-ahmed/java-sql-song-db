@@ -190,4 +190,11 @@ public class Place {
 
 
 
+	public String getService() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 }
