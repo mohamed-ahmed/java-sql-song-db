@@ -52,14 +52,14 @@ public class javaWithSQliteMain {
 	            System.out.println("");
 	            System.out.println(sqlQueryString);
 
-	            ArrayList<FakeBook> books = new ArrayList<FakeBook>();
+	            ArrayList<Service> services = new ArrayList<Service>();
 
 		        ResultSet rs = stat.executeQuery(sqlQueryString);
 		        while (rs.next()) {
 		            //System.out.print("code: " + rs.getString("code"));
 		            //System.out.println(" title = " + rs.getString("title"));
-		            FakeBook fakebook = new FakeBook(rs.getString("code"), rs.getString("title"));
-		            books.add(fakebook);
+		            Service	service = new Service(rs.getInt("service_id"), rs.getString("name"), rs.getString("type"), rs.getString("website"));
+		            services.add(service);
 		        }
 		        rs.close(); //close the query result table
 		        
@@ -70,7 +70,7 @@ public class javaWithSQliteMain {
 	            System.out.println("");
 	            System.out.println(sqlQueryString);
 	            
-	            ArrayList<FakeBookSong> songSearchResults = new ArrayList<FakeBookSong>();
+	            ArrayList<Place> placeSearchResults = new ArrayList<Place>();
 
 		        int DISPLAY_LIMIT = 100;
 		        int count = 0;
@@ -80,22 +80,28 @@ public class javaWithSQliteMain {
 		            //System.out.print(" page: " + rs.getInt("page"));
 		            //System.out.println(" song: " + rs.getString("title"));
 		            
-		            FakeBookSong song = new FakeBookSong(
-		            		rs.getInt("id"),
-		            		rs.getString("bookcode"),
-		            		rs.getInt("page"),
-		            		rs.getString("title")
-		            		);
-		            songSearchResults.add(song);
-	            count++;
+		        	Place place = new Place(
+							rs.getInt("place_id"),
+							rs.getString("name"),
+							rs.getString("type"),
+							rs.getString("location"),
+							rs.getString("address"),
+							rs.getString("website"),
+							rs.getInt("opening_hours"),
+							rs.getInt("closing_hours"),
+							rs.getInt("rating")
+					);
+		        	
+		            placeSearchResults.add(place);
+		            count++;
 		        }
 		        rs.close(); //close the query result table
 		        
-		        FakeBookSong[] songArray = new FakeBookSong[1]; //just to establish array type
-		        songArray =  songSearchResults.toArray(songArray);
+		        Place[] placeArray = new Place[1]; //just to establish array type
+		        placeArray =  placeSearchResults.toArray(placeArray);
 				
 		        //Create GUI with knowledge of database and initial query content
-		        frame =  new GUI("Fake Book Index Winter2014", database, stat, books, songSearchResults); //create GUI frame with knowledge of the database
+		        frame =  new GUI("Place Database", database, stat, services, placeSearchResults); //create GUI frame with knowledge of the database
 		        
 		        //Leave it to GUI to close database
 		        //conn.close(); //close connection to database			

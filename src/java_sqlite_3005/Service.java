@@ -11,9 +11,11 @@ public class Service {
 	private String website;
 	
 
-	public Service(int serviceID , String name){
+	public Service(int serviceID , String name, String type, String website){
 		this.serviceID = serviceID;
 		this.name = name;
+		this.type = type;
+		this.website = website;
 	}
 	
 	public int getServiceID() {

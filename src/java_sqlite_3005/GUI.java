@@ -272,10 +272,10 @@ public class GUI extends JFrame implements DialogClient{
 			String sqlUpdateString = "update place " 
 					+"set "
 					//+ "id="  + placeBeingEdited.getID() +", "
-					+ "servicecode='" + placeBeingEdited.getServiceCode() + "', "
-					+ "page='" + placeBeingEdited.getPage() + "', " 
-					+ "title='" + placeBeingEdited.getTitle() + "' "
-					+ "where id=" + placeBeingEdited.getID()  + ";";
+					+ "name='" + placeBeingEdited.getName() + "', "
+					+ "type='" + placeBeingEdited.getType() + "', " 
+					+ "website='" + placeBeingEdited.getWebsite() + "' "
+					+ "where place_id=" + placeBeingEdited.getPlaceID()  + ";";
 
 			System.out.println("sqlUpdateString: " + sqlUpdateString);
 
@@ -292,26 +292,26 @@ public class GUI extends JFrame implements DialogClient{
 			System.out.println("DELETE: " + placeBeingEdited );
 
 			String sqlDeleteString = "delete from place where ";
-			if(placeBeingEdited.getID().length() > 0){
-				sqlDeleteString	+= " id="  + placeBeingEdited.getID() + " ";
+			if( (" " + placeBeingEdited.getPlaceID()).equals(" ")){
+				sqlDeleteString	+= " id="  + placeBeingEdited.getPlaceID() + " ";
 			}
 
 			else{
 
-				if(placeBeingEdited.getServiceCode().length() > 0){
-					sqlDeleteString += "servicecode='" + placeBeingEdited.getServiceCode() + "'";
+				if(placeBeingEdited.getName().length() > 0){
+					sqlDeleteString += "name='" + placeBeingEdited.getName() + "'";
 					numParams++;
 				}
 
-				if(placeBeingEdited.getPage().length() > 0){
+				if(placeBeingEdited.getType().length() > 0){
 					sqlDeleteString += (numParams > 0 ? " AND " : "");
-					sqlDeleteString += " page=" + placeBeingEdited.getPage();
+					sqlDeleteString += " type=" + placeBeingEdited.getType();
 					numParams++;
 				}
 
-				if(placeBeingEdited.getTitle().length() > 0){
+				if(placeBeingEdited.getWebsite().length() > 0){
 					sqlDeleteString += (numParams > 0 ? " AND " : "");
-					sqlDeleteString += " title='" + placeBeingEdited.getTitle() + "'";
+					sqlDeleteString += " title='" + placeBeingEdited.getWebsite() + "'";
 				}
 			}
 

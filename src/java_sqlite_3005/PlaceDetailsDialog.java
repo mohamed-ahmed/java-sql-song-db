@@ -15,10 +15,9 @@ public class PlaceDetailsDialog extends JDialog {
 	// These are the components of the dialog box
 	private JLabel					aLabel; //reuseable label variable
 	
-	private JTextField				nameField; //name of the song
-	private JTextField				typeField; //artist of the song
-	private JTextField				typeield; //price of the song
-	private JTextField				website; //year of the song
+	private JTextField				nameField; //name of the place
+	private JTextField				typeField; //type of the place
+	private JTextField				websiteField; //website of the place
 	
 	private JButton					updateButton;
 	private JButton					deleteButton;
@@ -128,8 +127,8 @@ public class PlaceDetailsDialog extends JDialog {
         layout.setConstraints(nameField, lc);
    		getContentPane().add(nameField);
 
-		// Add the address field
-		typeField = new JTextField(thePlace.getService());
+		// Add the type field
+		typeField = new JTextField(thePlace.getType());
 		typeField.setFont(UIFont);
 
         lc.gridx = 1; lc.gridy = 1;
@@ -140,26 +139,17 @@ public class PlaceDetailsDialog extends JDialog {
    		getContentPane().add(typeField);
         
  
- 		// Add the year field
-		pageField = new JTextField(""+ thePlace.getPage());
-		pageField.setFont(UIFont);
+ 		// Add the website field
+   		websiteField = new JTextField(""+ thePlace.getWebsite());
+   		websiteField.setFont(UIFont);
         lc.gridx = 1; lc.gridy = 2;
         lc.gridwidth = 3; lc.gridheight = 1;
         lc.fill = GridBagConstraints.BOTH;
         lc.weightx = 1.0; lc.weighty = 0.0;
-        layout.setConstraints(pageField, lc);
-   		getContentPane().add(pageField);
+        layout.setConstraints(websiteField, lc);
+   		getContentPane().add(websiteField);
         
 
- 		// Add the price field
-		idField = new JTextField(""+ thePlace.getID());
-		idField.setFont(UIFont);
-		lc.gridx = 1; lc.gridy = 3;
-        lc.gridwidth = 3; lc.gridheight = 1;
-        lc.fill = GridBagConstraints.BOTH;
-        lc.weightx = 1.0; lc.weighty = 0.0;
-        layout.setConstraints(idField, lc);
-   		getContentPane().add(idField);
 
 
 		// Add the Update button
@@ -197,7 +187,7 @@ public class PlaceDetailsDialog extends JDialog {
 		
 		thePlace.setName(nameField.getText());
 		thePlace.setType(typeField.getText());
-		thePlace.setPage(pageField.getText());
+		thePlace.setWebsite(websiteField.getText());
 		
 		//Inform the dialog client that the dialog finished
 		
@@ -212,10 +202,12 @@ public class PlaceDetailsDialog extends JDialog {
 	
 	private void deleteButtonClicked(){
 		
-		thePlace.setID(idField.getText());
+		/*thePlace.setID(placeField.getText());
 		thePlace.setTitle(titleField.getText());
 		thePlace.setBookCode(typeField.getText());
-		thePlace.setPage(pageField.getText());
+		thePlace.setPage(pageField.getText());*/
+		
+		thePlace.deleteEntry();
 		
 		//Inform the dialog client that the dialog finished
 		

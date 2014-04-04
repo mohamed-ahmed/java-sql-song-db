@@ -12,16 +12,16 @@ public class ListPanel extends JPanel {
 	// These are the components
 	private JButton		searchButton;
 	private JTextField  searchText;
-	private JList		bookList;
-	private JList		songList;
+	private JList		serviceList;
+	private JList		placeList;
 	
 	private Font UIFont = new Font("Courier New", Font.BOLD, 16);
 
 
 	// These are the get methods that are used to access the components
 	public JButton getSearchButton() { return searchButton; }
-	public JList getBookList() { return bookList; }
-	public JList getSongList() { return songList; }
+	public JList getServiceList() { return serviceList; }
+	public JList getPlaceList() { return placeList; }
 	public JTextField getSearchText() { return searchText; }
 	
 	
@@ -37,10 +37,10 @@ public class ListPanel extends JPanel {
 		setLayout(layout);
 
 		// Add the bookList list
-		bookList = new JList();
-		bookList.setFont(UIFont);
-		bookList.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-		JScrollPane scrollPane = new JScrollPane( bookList,
+		serviceList = new JList();
+		serviceList.setFont(UIFont);
+		serviceList.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		JScrollPane scrollPane = new JScrollPane( serviceList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		layoutConstraints.gridx = 0;
@@ -86,10 +86,10 @@ public class ListPanel extends JPanel {
 		add(searchButton);
 
 		// Add the songList list
-		songList = new JList();
-		songList.setFont(UIFont);
-		songList.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-		scrollPane = new JScrollPane( songList,
+		placeList = new JList();
+		placeList.setFont(UIFont);
+		placeList.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		scrollPane = new JScrollPane( placeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		layoutConstraints.gridx = 1;

@@ -190,10 +190,35 @@ public class Place {
 
 
 
-	public String getService() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * @return the placeID
+	 */
+	public int getPlaceID() {
+		return placeID;
 	}
+
+
+
+	/**
+	 * @param placeID the placeID to set
+	 */
+	public void setPlaceID(int placeID) {
+		this.placeID = placeID;
+	}
+
+
+
+	public void deleteEntry() {
+		this.placeID = (Integer) null;
+		this.name = null;
+		this.type = null;
+		this.location = null;
+		this.address = null;
+		this.website = null;
+		this.opening_hours = (Integer) null;
+		this.closing_hours = (Integer) null;
+	}
+		
 
 
 
