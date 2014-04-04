@@ -52,14 +52,19 @@ BEGIN TRANSACTION;
 --Places
 insert into place values(1, "tims","cafe" ,"45.1,-75.2" ,"1720 innes road" ,"www.tims.com" ,800, 2200 ,4 );
 insert into place values(2, "tims", "cafe", "45.2-74.3", "123 Blair Road", "www.tims.com", 900, 2300, 3);
-insert into place values(3, "Orleans Mall", "mall", "45.4,-74.5", "100 Orleans Blvd", "www.OrleansMall.com", 900, 2100, );
+insert into place values(3, "Orleans Mall", "mall", "45.4,-74.5", "100 Orleans Blvd", "www.OrleansMall.com", 900, 2100, 2 );
+insert into place values(4, "East Ottawa Police Station", "police", "45,5,-75.6", "5 Main Street", "www.OttawaPolice.com" , 900, 2100, 2 );
+
 
 
 --Services
 insert into service values(101, "tims", "cafe", "www.tims.com");
+insert into service values(102, "Ottawa Police", "police", "www.OttawaPolice.com");
 
 --What place is of what service
 insert into place_of_service values (101,1);
+insert into place_of_service values (101,2);
+insert into place_of_service values (102,4);
 
 --what place is contained in what other place
 insert into place_contains_place values(3, 1);

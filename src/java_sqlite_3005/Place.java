@@ -176,14 +176,14 @@ public class Place {
 	public String toString(){
 		
 		String s = "";
-		s += placeID;
-		s += name;
-		s += type;
-		s += location;
-		s += address;
-		s += website;
-		s += opening_hours;
-		s += closing_hours;
+		s += placeID + " ";
+		s += name + " ";
+		s += type + " ";
+		s += location + " ";
+		s += address + " ";
+		s += website + " ";
+		s += opening_hours + " ";
+		s += closing_hours + " ";
 		
 		return s;
 	}

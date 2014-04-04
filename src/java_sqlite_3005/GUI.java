@@ -49,7 +49,7 @@ public class GUI extends JFrame implements DialogClient{
 	// Here is the default constructor
 	public GUI(String title, Connection aDB, Statement aStatement, ArrayList<Service> initialServices, ArrayList<Place> initialPlaces) {
 		super(title);
-		
+
 		databaseConnection = aDB;
 		stat = aStatement;
 
@@ -169,11 +169,35 @@ public class GUI extends JFrame implements DialogClient{
 		String searchPrototype = view.getSearchText().getText().trim();
 
 
-		String sqlQueryString = "select * from places where name like '%" + searchPrototype + "%' order by name asc" + ";";
+		String sqlQueryString = "select * from place where name like '%" + searchPrototype + "%' order by name asc" + ";";
 		//check some special cases
-		if(searchPrototype.equals("*"))      sqlQueryString = "select * from places" + ";";
-		else if(searchPrototype.equals("%")) sqlQueryString = "select * from places" + ";";
-		else if(searchPrototype.equals(""))  sqlQueryString = "select * from places" + ";";
+		if(searchPrototype.equals("*"))      sqlQueryString = "select * from place";
+		else if(searchPrototype.equals("%")) sqlQueryString = "select * from place";
+		else if(searchPrototype.equals(""))  sqlQueryString = "select * from place";
+
+		if(selectedService != null){
+
+			sqlQueryString = 
+
+					"select * from " + 
+
+					"(select place_id, location, address, opening_hours, closing_hours, rating from place) natural join " +
+
+					" (select * from service natural join place_of_service) " +
+					
+					"where service_id = " +  selectedService.getServiceID();
+			
+			if(searchPrototype.length() > 0){
+				sqlQueryString += "and where name like '%" + searchPrototype + "%' order by name asc";
+			}
+
+			sqlQueryString += ";";
+
+		}
+
+		sqlQueryString += ";";
+
+		System.out.println("Query string is : " + sqlQueryString);
 
 		try {
 			ResultSet rs = stat.executeQuery(sqlQueryString);
@@ -192,7 +216,7 @@ public class GUI extends JFrame implements DialogClient{
 						rs.getInt("opening_hours"),
 						rs.getInt("closing_hours"),
 						rs.getInt("rating")
-				);
+						);
 
 				placeSearchResults.add(place);
 				count++;
@@ -328,7 +352,7 @@ public class GUI extends JFrame implements DialogClient{
 
 		}
 		placeBeingEdited = null;
-		
+
 		update();
 		search();
 	}

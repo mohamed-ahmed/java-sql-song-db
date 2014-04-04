@@ -32,7 +32,7 @@ public class javaWithSQliteMain {
 			//if the database does not exist one will be created in the home directory
 		    
 			//Connection conn = DriverManager.getConnection("jdbc:sqlite:mytest.db");
-			Connection database = DriverManager.getConnection("jdbc:sqlite:db_fake_books_3005_Winter2014");
+			Connection database = DriverManager.getConnection("jdbc:sqlite:placesDB");
 		       //create a statement object which will be used to relay a
 		       //sql query to the database
 		     Statement stat = database.createStatement();
@@ -48,7 +48,7 @@ public class javaWithSQliteMain {
 		   
                 //Query database for initial contents for GUI
 
-	            String sqlQueryString = "select * from bookcodes order by code asc;";
+	            String sqlQueryString = "select * from service order by name asc;";
 	            System.out.println("");
 	            System.out.println(sqlQueryString);
 
@@ -65,7 +65,7 @@ public class javaWithSQliteMain {
 		        
 
 
-	            sqlQueryString = "select * from songs3005W2014;";
+	            sqlQueryString = "select * from place;";
 		        rs = stat.executeQuery(sqlQueryString);
 	            System.out.println("");
 	            System.out.println(sqlQueryString);
