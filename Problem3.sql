@@ -54,6 +54,24 @@ insert into place values(1, "tims","cafe" ,"45.1,-75.2" ,"1720 innes road" ,"www
 insert into place values(2, "tims", "cafe", "45.2-74.3", "123 Blair Road", "www.tims.com", 900, 2300, 3);
 insert into place values(3, "Orleans Mall", "mall", "45.4,-74.5", "100 Orleans Blvd", "www.OrleansMall.com", 900, 2100, 2 );
 insert into place values(4, "East Ottawa Police Station", "police", "45,5,-75.6", "5 Main Street", "www.OttawaPolice.com" , 900, 2100, 2 );
+insert into place values(5, "West Ottawa Police Station", "police", "45.2,-75.8", "853 Phillips Street", "www.OttawaPolice.com", 900, 2000,3);
+insert into place values(6, "Midway Family Fun Park", "smusement_center", "45.1, -74.2", "2477 Kaladar Ave", "www.MidwayFamily.ca", 830, 1900, 5);
+insert into place values(7, "Tubes Et Jujubes", "amusement_center", "45.9, -75.7", "170 Rue Deveault", "www.Tubesetjujubes", 1000,2200,3);
+insert into place values(8, "Cosmic Adventures Inc", "recreation_center", "45.6, -74.7", "1373 Ogilvie Rd", "www.cosmicadventures", 900, 2000, 2);
+insert into place values(9, "Cartier Place Suit Hotel", "hotel", "45.5, -75.7", "180 Cooper St", "www.CarterHotel.ca", 700, 2300, 5);
+insert into place values(10, "AMF College Lanes", "bowling_alley", "44.2, -74.6", "131 Maloney Street", "www.CollegeLanes", 900,2100, 3);
+insert into place values(11, "Valleyview Little Animal Farm", "amusement_center","44.9, -75.9", "4750 Fallowfield Rd", "www.Animalfarmottawa.ca", 930, 2000, 5); 
+insert into place values(12, "Tag Zone", "Paintball Center", "paintball_center", "45.1, -74.5", "89 Montreal Rd", "www.Tagzone.com", 800, 2200, 4);
+insert into place values(13, "Country Place Chinese Restaurant", "restaurant", "44.5, -75.2", "174 Boulevard Greber", "www.Countryplaceresturant", 900, 2300, 5);
+insert into place values(14, "The SHore Club", "restaurant", "45.2, -74.6", "11 Colonel By Dr", "www.ShoreClub.ca", 1000, 2300, 5);
+insert into place values(15, "Gatineau Park","national_park","44.3,-75.1","33 Scott Road","www.GatineauPark.ca",700,2000,5);
+insert into place values(16, "Courtyard by Marriot Ottawa","hotel","45.1,-74.6","350 Dalhousie St","www.MarriotOttawa.ca",800,2300,3);
+insert into place values(17, "ByWard Market","market","44.8, -74.2","55 Byward Market Square","www.OttawaByWardMarket.ca",900,2300,5);
+insert into place values(18, "168 Sushi Buffet","restaurant","45.3, -74.9","1651 Merivale Rd","www.168SushiBuffet.ca",800,2000,4);
+insert into place values(19, "The Cake Shop","bakery","44.9, -75.1","1200 Wellington St","www.OttawaCakeShop.com",900,1900,5);
+insert into place values(20, "Parliament Hill","historical_place","45.9, -74.6","Wellington St","www.Parliamenthill.ca",800,1700,5);
+insert into place values(21, "Steve Police Station", "police", "45.1, -75.9", "754 AltaVista", "www.Stevespolice.com", 800,2200,2);
+
 
 
 
